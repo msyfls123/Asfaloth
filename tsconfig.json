@@ -5,7 +5,7 @@
     "extends": "@tsconfig/svelte/tsconfig.json",
 
     "compilerOptions": {
-        "module": "esnext",
+        "module": "ESNExt",
         "declaration": true,
         "removeComments": true,
         "noLib": false,
@@ -28,7 +28,8 @@
         "paths": {
             "~/*": ["src/*"],
             "*": ["./node_modules/*"]
-        }
+        },
+        "outDir": "./dist"
     },
     /**
      * `svelte-nodegui.d.ts` provides the JSX typings needed to support Svelte components using lang="ts".
