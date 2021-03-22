@@ -17,7 +17,7 @@
         "allowUnusedLabels": false,
         "noEmitHelpers": true,
         "noEmitOnError": false,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "noImplicitReturns": false,
         "noImplicitUseStrict": false,
         "noFallthroughCasesInSwitch": true,
