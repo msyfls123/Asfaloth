@@ -7,8 +7,8 @@
   "author": "msyfls123 <msyfls123@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "start": "qode ./src/index.js",
+    "build": "rollup -c rollup.config.mjs",
+    "start": "node watch.mjs",
     "debug": "qode --inspect ./dist/app.js"
   },
   "dependencies": {

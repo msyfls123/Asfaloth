@@ -8,7 +8,7 @@ import svelteNodeGUIPreprocessor from '@nodegui/svelte-nodegui-preprocessor'
 import url from '@rollup/plugin-url'
 import replace from '@rollup/plugin-replace'
 
-const projectDir = __dirname
+const projectDir = path.resolve()
 const outDir = path.join(projectDir, 'dist')
 const srcDir = path.join(projectDir, 'src')
 

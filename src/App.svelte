@@ -45,6 +45,10 @@
         qproperty-alignment: 'AlignHCenter';
         font-family: 'sans-serif';
     }
+    #welcome-text:hover {
+        font-size: 28px;
+        color: #39aebf;
+    }
     #step-1, #step-2 {
         font-size: 18px;
         padding-top: 10px;
