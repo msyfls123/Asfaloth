@@ -1,32 +1,52 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { writable } from 'svelte/store'
     import type { NSVElement, RNWindow } from "@nodegui/svelte-nodegui";
     /**
      * The exact type for this is: NSVElement<RNWindow>
      * ... However, the Svelte language tools erroneously expect all bind:this values to extend HTMLElement, so
      * for now, we have to rely on reasserting the type.
      */
-     let win;
+    let win;
+    let showAnother = writable(false);
+    let otherWin;
     onMount(() => {
         (window as any).win = win; // Prevent garbage collection, otherwise the window quickly disappears!
+        (window as any).otherWin = otherWin;
         (win as NSVElement<RNWindow>).nativeView.show();
         return () => {
             delete (window as any).win;
+            delete (window as any).otherWin;
         };
     });
+    showAnother.subscribe((show) => {
+        console.log(show)
+        if (show) {
+            (otherWin as NSVElement<RNWindow>).nativeView.show();
+        } else if (otherWin) {
+            (otherWin as NSVElement<RNWindow>).nativeView.close();
+        }
+    })
 </script>
 
-<window
-    bind:this={win}
-    minSize={{ width: 500, height: 520 }}
-    windowTitle="Hello 👋🏽"
->
-    <view style="flex: 1;">
-        <text id="welcome-text">Welcome to Svelte NodeGUI 🐕</text>
-        <text id="step-1">1. Play around</text>
-        <text id="step-2">2. Debug</text>
-    </view>
-</window>
+<body>
+    <window
+        bind:this={win}
+        minSize={{ width: 500, height: 520 }}
+        windowTitle="Hello 👋🏽"
+    >
+        <view style="flex: 1;">
+            <text id="welcome-text">Welcome to Svelte NodeGUI 🐕</text>
+            <text id="step-1">1. Play around</text>
+            <text id="step-2">2. Debug</text>
+            <button on:clicked={() => showAnother.update(v =>!v)}>Toggle Window</button>
+        </view>
+    </window>
+
+    <window bind:this={otherWin}>
+        <view><text>hello world</text></view>
+    </window>
+</body>
 
 <style>
     /* 
