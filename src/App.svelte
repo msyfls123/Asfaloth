@@ -12,7 +12,6 @@
     let otherWin;
     onMount(() => {
         (window as any).win = win; // Prevent garbage collection, otherwise the window quickly disappears!
-        (window as any).otherWin = otherWin;
         (win as NSVElement<RNWindow>).nativeView.show();
         return () => {
             delete (window as any).win;
@@ -20,12 +19,15 @@
         };
     });
     showAnother.subscribe((show) => {
-        console.log(show)
-        if (show) {
-            (otherWin as NSVElement<RNWindow>).nativeView.show();
-        } else if (otherWin) {
-            (otherWin as NSVElement<RNWindow>).nativeView.close();
-        }
+        setTimeout(() => {
+            if (show) {
+                (otherWin as NSVElement<RNWindow>).nativeView.show();
+                (window as any).otherWin = otherWin;
+            } else if ((window as any).otherWin) {
+                ((window as any).otherWin as NSVElement<RNWindow>).nativeView.close();
+                delete (window as any).otherWin;
+            }
+        }, 500) // can't figure out when bind:this will complete, just delay
     })
 </script>
 
@@ -43,9 +45,11 @@
         </view>
     </window>
 
-    <window bind:this={otherWin}>
-        <view><text>hello world</text></view>
-    </window>
+    {#if $showAnother}
+        <window bind:this={otherWin}>
+            <view><text>hello world</text></view>
+        </window>
+    {/if}
 </body>
 
 <style>
