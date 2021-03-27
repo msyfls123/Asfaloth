@@ -8,9 +8,10 @@
 
 <script lang="ts">
   import { onMount } from 'svelte';
-  import type { NSVElement, RNWindow } from "@nodegui/svelte-nodegui";
 
+  export let onClose;
   let win: any;
+
   onMount(() => {
     const winKey = getWindowKey(globalId++);
     window[winKey] = win;
@@ -24,6 +25,7 @@
 
 <window
   bind:this={win}
+  on:Close={onClose}
   {...$$restProps}
 >
   <slot>void</slot>

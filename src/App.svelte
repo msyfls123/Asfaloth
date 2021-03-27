@@ -1,39 +1,26 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import { writable } from 'svelte/store'
-    import type { NSVElement, RNWindow } from "@nodegui/svelte-nodegui";
-    /**
-     * The exact type for this is: NSVElement<RNWindow>
-     * ... However, the Svelte language tools erroneously expect all bind:this values to extend HTMLElement, so
-     * for now, we have to rely on reasserting the type.
-     */
-    let win;
-    let showAnother = writable(false);
-    let otherWin;
-    onMount(() => {
-        (window as any).win = win; // Prevent garbage collection, otherwise the window quickly disappears!
-        (win as NSVElement<RNWindow>).nativeView.show();
-        return () => {
-            delete (window as any).win;
-            delete (window as any).otherWin;
-        };
-    });
-    showAnother.subscribe((show) => {
-        setTimeout(() => {
-            if (show) {
-                (otherWin as NSVElement<RNWindow>).nativeView.show();
-                (window as any).otherWin = otherWin;
-            } else if ((window as any).otherWin) {
-                ((window as any).otherWin as NSVElement<RNWindow>).nativeView.close();
-                delete (window as any).otherWin;
-            }
-        }, 500) // can't figure out when bind:this will complete, just delay
-    })
+    import Dummy from './components/Dummy.svelte';
+    import Window from './components/Window.svelte'
+    import WindowProvider from './containers/WindowProvider.svelte';
+    let windowProvider: WindowProvider;
+
+    const handleAddWindow = () => {
+        const name = (Math.random() * 10000).toFixed(0)
+        const winId = windowProvider.addWindow({
+            comp: Dummy,
+            compProps: {
+                name,
+                close: () => {
+                    windowProvider.removeWindow(winId)
+                }
+            },
+            winProps: {}
+        })
+    }
 </script>
 
-<body>
-    <window
-        bind:this={win}
+<WindowProvider bind:this={windowProvider}>
+    <Window
         minSize={{ width: 500, height: 520 }}
         windowTitle="Hello 👋🏽"
     >
@@ -41,16 +28,10 @@
             <text id="welcome-text">Welcome to Svelte NodeGUI 🐕</text>
             <text id="step-1">1. Play around</text>
             <text id="step-2">2. Debug</text>
-            <button on:clicked={() => showAnother.update(v =>!v)}>Toggle Window</button>
+            <button on:clicked={handleAddWindow}>Add Window</button>
         </view>
-    </window>
-
-    {#if $showAnother}
-        <window bind:this={otherWin}>
-            <view><text>hello world</text></view>
-        </window>
-    {/if}
-</body>
+    </Window>
+</WindowProvider>
 
 <style>
     /* 
