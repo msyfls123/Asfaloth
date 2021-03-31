@@ -1,8 +1,13 @@
 <script lang="ts">
+    import { Direction } from "@nodegui/nodegui";
     import Dummy from './components/Dummy.svelte';
     import Window from './components/Window.svelte'
     import WindowProvider from './containers/WindowProvider.svelte';
     let windowProvider: WindowProvider;
+    import ImageRosi from './images/rosi-2298-040.jpg';
+    import path from 'path';
+
+    const imageRosiLocal = path.join(__dirname, ImageRosi);
 
     const handleAddWindow = () => {
         const name = (Math.random() * 10000).toFixed(0)
@@ -28,8 +33,11 @@
             <text id="welcome-text">Welcome to Svelte NodeGUI 🐕</text>
             <text id="step-1">1. Play around</text>
             <text id="step-2">2. Debug</text>
+            <image id="rosi-image" src={imageRosiLocal}/>
+            
             <button on:clicked={handleAddWindow}>Add Window</button>
         </view>
+        
     </Window>
 </WindowProvider>
 
@@ -58,5 +66,10 @@
         font-size: 18px;
         padding-top: 10px;
         padding-horizontal: 20px;
+    }
+    #rosi-image {
+        margin: 0 auto;
+        max-width: 250px;
+        max-height: 100px;
     }
 </style>
