@@ -1,13 +1,17 @@
 <script lang="ts">
-    import { Direction } from "@nodegui/nodegui";
+    import path from 'path';
+    import { QIcon } from '@nodegui/nodegui';
     import Dummy from './components/Dummy.svelte';
     import Window from './components/Window.svelte'
     import WindowProvider from './containers/WindowProvider.svelte';
-    let windowProvider: WindowProvider;
+    import Tray from './components/Tray.svelte';
     import ImageRosi from './images/rosi-2298-040.jpg';
-    import path from 'path';
+    import ImageIcon from './images/icon.png';
+
+    let windowProvider: WindowProvider;
 
     const imageRosiLocal = path.join(__dirname, ImageRosi);
+    const icon = new QIcon(path.join(__dirname, ImageIcon));
 
     const handleAddWindow = () => {
         const name = (Math.random() * 10000).toFixed(0)
@@ -37,8 +41,12 @@
             
             <button on:clicked={handleAddWindow}>Add Window</button>
         </view>
-        
     </Window>
+    <Tray {icon} tooltip="Hello World" visible>
+        <menu>
+            <action text="hello" on:triggered={() => console.log(123)}></action>
+        </menu>
+    </Tray>
 </WindowProvider>
 
 <style>

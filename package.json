@@ -9,7 +9,8 @@
   "scripts": {
     "build": "rollup -c rollup.config.mjs",
     "start": "node watch.mjs",
-    "debug": "qode --inspect ./dist/app.js"
+    "debug": "qode --inspect ./dist/app.js",
+    "demo": "qode ./src/index.js"
   },
   "dependencies": {
     "@nodegui/nodegui": "^0.30.2",
