@@ -10,7 +10,7 @@
 
     let windowProvider: WindowProvider;
 
-    const imageRosiLocal = path.join(__dirname, ImageRosi);
+    const imageRosiLocal = path.relative(path.resolve(), path.join(__dirname, ImageRosi));
     const icon = new QIcon(path.join(__dirname, ImageIcon));
 
     const handleAddWindow = () => {
